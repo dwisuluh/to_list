@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'weather.dart';
 
 class HomePage extends StatefulWidget {
@@ -47,6 +48,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget buildDrawer(BuildContext context) {
+  final _auth = FirebaseAuth.instance;
   return Drawer(
     child: ListView(
       children: <Widget>[
@@ -78,27 +80,14 @@ Widget buildDrawer(BuildContext context) {
           title: Text('Logout'),
           leading: Icon(Icons.exit_to_app),
           onTap: () {
-            Navigator.pushNamed(context, '/login');
+            _auth.signOut();
+            Navigator.pop(context);
           },
         ),
         Divider(),
       ],
     ),
   );
-}
-
-class LogoutPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Logout Page"),
-      ),
-      body: new Center(
-        child: new Text('You have been logged out'),
-      ),
-    );
-  }
 }
 
 //Class home ketika navigasi home di klik
