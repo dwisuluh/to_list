@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:to_do_list/login_screen.dart';
 import 'weather.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,6 +50,10 @@ class _HomePageState extends State<HomePage> {
 
 Widget buildDrawer(BuildContext context) {
   final _auth = FirebaseAuth.instance;
+  _signOut() async {
+    await _auth.signOut();
+  }
+
   return Drawer(
     child: ListView(
       children: <Widget>[
@@ -79,9 +84,12 @@ Widget buildDrawer(BuildContext context) {
         ListTile(
           title: Text('Logout'),
           leading: Icon(Icons.exit_to_app),
-          onTap: () {
-            _auth.signOut();
-            Navigator.pop(context);
+          onTap: () async {
+            await _signOut();
+            if (_auth.currentUser == null) {
+              Navigator.pop(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
+            }
           },
         ),
         Divider(),
